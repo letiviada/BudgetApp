@@ -22,7 +22,18 @@ class App(tk.Frame):
 class Home(App):
     def __init__(self,*args,**kwargs):
         App.__init__(self,*args,*kwargs)
-        bt1=tk.Button(self, text="Clothing")
+
+        #Method to make the Button "Clothing" move to another page
+        def clothing():
+            home=Home(self)
+            home.place(x=0, y=0,relwidth=1, relheight=1)
+            frame=tk.Frame(self)
+            frame.place(x=0, y=0,relwidth=1, relheight=1)
+            btn=tk.Button(master=frame,text="Back",command=home.show)
+            btn.grid(row=0,column=1,sticky="ew")
+
+
+        bt1=tk.Button(self, text="Clothing",command=clothing)
         bt2=tk.Button(self,text="Entertainment")
         bt3=tk.Button(self, text="Groceries")
         bt4=tk.Button(self,text="Rent")
@@ -39,7 +50,7 @@ class Addexp(App):
    def __init__(self, *args, **kwargs):
        App.__init__(self, *args, **kwargs)
 
-       #Button 'Add'
+       #Button for Adding expenses
        def btaddexp():
            dt=date.get()
            u=username.get()
@@ -116,7 +127,7 @@ class Addexp(App):
                         lbl5.configure(fg="red")
 
 
-       #Table 1
+       #Table for filling in the details
        for i in range(11):
            if i<6:
                lbl=tk.Label(self, text=labels[i],font=("Cambria",17))
@@ -159,7 +170,6 @@ class Addexp(App):
 
        btn1=tk.Button(self, text="?", borderwidth=0)
        btn1.grid(row=2,column=2)
-
 
 class Account(App):
    def __init__(self, *args, **kwargs):
@@ -210,14 +220,14 @@ class Homepageview(tk.Frame):
 
         buttonframe = tk.Frame(self)
         container = tk.Frame(self)
-        container2=tk.Frame(self)
         buttonframe.pack(side="top", fill="x", expand=False)
         container.pack(side="top", fill="both", expand=True)
 
-        home.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        home.place(in_=container, x=0, y=0,relwidth=1, relheight=1)
         addexp.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         account.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         view_exp.place(in_=container,x=0, y=0, relwidth=1, relheight=1)
+
 
         b1 = tk.Button(buttonframe, text="Home", command=home.show)
         b2 = tk.Button(buttonframe, text="Add your expenses", command=addexp.show)
@@ -230,6 +240,8 @@ class Homepageview(tk.Frame):
         b4.pack(side="left")
 
         home.show()
+
+
 
 if __name__ == "__main__":
     window = tk.Tk()
