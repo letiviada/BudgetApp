@@ -44,6 +44,57 @@ class Clothing(Home):
 class Addexp(App):
    def __init__(self, *args, **kwargs):
        App.__init__(self, *args, **kwargs)
+    
+    #Button 'Add'
+       def btaddexp():
+           dt=date.get()
+           u=username.get()
+           cat=category.get()
+           desc=description.get().lower()
+           n=round(abs(float(exp_ent2.get())),2)
+           exp_lbl3.configure(text="")
+           date.configure(text="")
+           connection=create_connection("mydatabase.db")
+           get_prev_exp=f"SELECT username,expense,income from login WHERE username='{u}'"
+           ent=read_query(connection,get_prev_exp)
+
+           prev_exp=float(ent[0][1])
+           prev_inc=float(ent[0][2])
+
+           if ent[0][0]==u:
+               #Check date is valid
+               valid=True
+               try:
+                   day,month,year=dt.split("-")
+                   datetime.datetime(int(year), int(month), int(day))
+               except ValueError:
+                   valid=False
+               if valid:
+                   #Insert into 'username' table
+                   exp_table=f" INSERT INTO '{u}' (amount,category,date,description) VALUES ('{n}','{cat}','{dt}','{desc}') "
+                   execute_query(connection,exp_table)
+                   #Update expenses and income
+                   prev_exp=round(prev_exp+n,2)
+                   balance=prev_inc-prev_exp
+                   add_values=f"UPDATE login SET expense='{prev_exp}' WHERE username='{u}'"
+                   exp_ent2.delete(0,tk.END)
+                   date.delete(0,tk.END)
+                   description.delete(0,tk.END)
+                   category.set(value="")
+                   execute_query(connection,add_values)
+                   #Show 'expenses','balance'
+                   lbl4=tk.Label(self, text=prev_exp)
+                   lbl4.grid(row=5,column=1)
+                   lbl5=tk.Label(self,text=balance)
+                   lbl5.grid(row=8,column=1)
+                   if balance>=0:
+                       lbl5.configure(fg="green")
+                   else:
+                       lbl5.configure(fg="red")
+               else:
+                   lbl=tk.Label(self,text="Wrong date",fg="red")
+                   lbl.after(1800,lbl.destroy)
+                   lbl.grid(row=2,column=3)
 
        #Table 1
        for i in range(11):
