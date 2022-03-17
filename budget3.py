@@ -22,7 +22,7 @@ class App(tk.Frame):
 class Home(App):
     def __init__(self,*args,**kwargs):
         App.__init__(self,*args,*kwargs)
-        #Method to make the Button "Clothing" move to another page
+        #Method to make the Button move to another page
         def filter(x):
             def exp():
                 u=username.get()
