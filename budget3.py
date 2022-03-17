@@ -80,7 +80,16 @@ class Addexp(App):
        inc_ent1.grid(row=6,column=1,sticky="ew")
 
       #Buttons
+       btn_addexp=tk.Button(self, text="Add", borderwidth=0)
+       btn_addexp.grid(row=4,column=2)
 
+       btn_addinc=tk.Button(self, text="Add",borderwidth=0)
+       btn_addinc.grid(row=6,column=2)
+
+       btn1=tk.Button(self, text="?", borderwidth=0)
+       btn1.grid(row=2,column=2)
+
+ 
 
 class Account(App):
    def __init__(self, *args, **kwargs):
