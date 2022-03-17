@@ -3,7 +3,7 @@ from tkinter import ttk
 import datetime
 
 from database_methods import create_connection, execute_query, read_query
-
+connection=create_connection("mydatabase.db")
 #Lists
 labels=["Username: ","Category: ","Date: ","Description: ", "Enter your expenses here: ",
  "You have spent: ","Please enter a number above","Enter your income here: ",
@@ -22,23 +22,44 @@ class App(tk.Frame):
 class Home(App):
     def __init__(self,*args,**kwargs):
         App.__init__(self,*args,*kwargs)
-
         #Method to make the Button "Clothing" move to another page
-        def clothing():
+        def filter(x):
+            def exp():
+                u=username.get()
+                cond=f"SELECT date,amount,description from '{u}' WHERE category=='{x}'"
+                ent=read_query(connection,cond)
+                for i in range(3):
+                    label=tk.Label(master=frame,text=names[i],width=10)
+                    label.grid(row=2,column=i,sticky="ew")
+
+                for i in range(len(ent)):
+                    dt=ent[i][0]
+                    amount=ent[i][1]
+                    description=ent[i][2]
+                    dt_lbl=tk.Label(master=frame,text=dt)
+                    amount_lbl=tk.Label(master=frame,text=amount)
+                    description_lbl=tk.Label(master=frame,text=description)
+                    dt_lbl.grid(row=i+3,column=0)
+                    amount_lbl.grid(row=i+3,column=1)
+                    description_lbl.grid(row=i+3,column=2)
             home=Home(self)
             home.place(x=0, y=0,relwidth=1, relheight=1)
             frame=tk.Frame(self)
             frame.place(x=0, y=0,relwidth=1, relheight=1)
             btn=tk.Button(master=frame,text="Back",command=home.show)
             btn.grid(row=0,column=1,sticky="ew")
-
-
-        bt1=tk.Button(self, text="Clothing",command=clothing)
-        bt2=tk.Button(self,text="Entertainment")
-        bt3=tk.Button(self, text="Groceries")
-        bt4=tk.Button(self,text="Rent")
-        bt5=tk.Button(self,text="Transport/Travel")
-        bt6=tk.Button(self,text="Other")
+            ulbl=tk.Label(master=frame,text="Username: ")
+            username=tk.Entry(master=frame)
+            ubtn=tk.Button(master=frame, text="Show expenses", command=exp)
+            ulbl.grid(row=1,column=1)
+            username.grid(row=1,column=2)
+            ubtn.grid(row=1,column=3)
+        bt1=tk.Button(self, text="Clothing",command=lambda: filter("Clothing"))
+        bt2=tk.Button(self,text="Entertainment",command=lambda: filter("Entertainment"))
+        bt3=tk.Button(self, text="Groceries",command=lambda: filter("Groceries"))
+        bt4=tk.Button(self,text="Rent",command=lambda:filter("Rent"))
+        bt5=tk.Button(self,text="Transport/Travel",command=lambda: filter("Transport/Travel"))
+        bt6=tk.Button(self,text="Other", command=lambda: filter("Other"))
         bt1.pack(fill="both", expand=True)
         bt2.pack(fill="both", expand=True)
         bt3.pack(fill="both", expand=True)
@@ -59,7 +80,6 @@ class Addexp(App):
            n=round(abs(float(exp_ent2.get())),2)
            exp_lbl3.configure(text="")
            date.configure(text="")
-           connection=create_connection("mydatabase.db")
            get_prev_exp=f"SELECT username,expense,income from login WHERE username='{u}'"
            ent=read_query(connection,get_prev_exp)
 
@@ -187,7 +207,6 @@ class View_exp(App):
                 label.grid(row=1,column=i,sticky="ew")
 
             get_values=f"SELECT date,amount,category,description from '{u}'"
-            connection=create_connection("mydatabase.db")
             ent=read_query(connection,get_values)
             for i in range(len(ent)):
                 dt=ent[i][0]
