@@ -1,2 +1,2 @@
 # BudgetApp
-I have created a Budget App using Python's user interface framework Tkinter. I used this framework to create windows, buttons, text boxes, and other UI elements that you can use to interact with the Budget App.
+I have created a Budget App using Python's user interface framework Tkinter. I used this framework to create windows, buttons, text boxes, and other UI elements that you can use to interact with the Budget App. The app includes a home page where you can add different expenses depending on the categories, and visualize in a table the expenses of a specific category and a login and sign up page to access your account.
